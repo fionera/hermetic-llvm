@@ -111,6 +111,7 @@ def _llvm_source_archive_excludes():
         "libc/docs",
         "libc/utils/gn",
         "llvm/utils/mlgo-utils/*",
+        "utils/bazel/llvm-project-overlay/openmp/runtime",
     ]
 
     test_docs_subprojects = [
