@@ -251,6 +251,7 @@ def cc_toolchain(
     native.alias(
         name = name + "_generic_static_runtime_lib",
         actual = select({
+            "@llvm//constraints/libc:none": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_none": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_stage1": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_stage1_hosted": "@llvm//runtimes:none",
@@ -270,6 +271,7 @@ def cc_toolchain(
     native.alias(
         name = name + "_generic_dynamic_runtime_lib",
         actual = select({
+            "@llvm//constraints/libc:none": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_none": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_stage1": "@llvm//runtimes:none",
             "@llvm//toolchain:runtimes_stage1_hosted": "@llvm//runtimes:none",
@@ -289,10 +291,8 @@ def cc_toolchain(
     _cc_toolchain(
         name = name,
         args = select({
-            "@llvm//toolchain:runtimes_none": ["@llvm//toolchain/runtimes:toolchain_args"],
-            "@llvm//toolchain:runtimes_stage1": ["@llvm//toolchain/runtimes:toolchain_args"],
-            "@llvm//toolchain:runtimes_stage1_hosted": ["@llvm//toolchain/runtimes:toolchain_args"],
-            "//conditions:default": ["@llvm//toolchain:toolchain_args"],
+            "@llvm//constraints/libc:none": ["@llvm//toolchain:freestanding_toolchain_args"],
+            "//conditions:default": ["@llvm//toolchain:hosted_toolchain_args"],
         }) + extra_args,
         # clang-cl header parsing remains a named unsupported boundary. It can
         # become true only with a dialect-correct parse-only action and proved
@@ -339,6 +339,7 @@ def cc_toolchain(
             "//conditions:default": "clang",
         }),
         target_libc = select({
+            "@llvm//constraints/libc:none": "none",
             "@llvm//platforms/config:gnu": "glibc",
             "@llvm//platforms/config:musl": "musl",
             "@llvm//platforms/config:windows_crt_msvcrt": "msvcrt",
