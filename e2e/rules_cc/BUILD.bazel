@@ -1680,3 +1680,16 @@ exec_test(
         "//conditions:default": [],
     }),
 )
+
+# The linker response file must preserve whitespace and apostrophes in object paths.
+cc_test(
+    name = "response_file_quoting_test",
+    srcs = [
+        "response file (extension)'s.cc",
+        "response_file_quoting_test.cc",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)

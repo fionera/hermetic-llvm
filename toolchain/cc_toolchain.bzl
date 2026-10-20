@@ -201,6 +201,9 @@ def cc_toolchain(
     cc_feature_set(
         name = name + "_generic_selected_known_features",
         all_of = select({
+            "@platforms//os:linux": ["@llvm//toolchain/features:gcc_quoting_for_param_files"],
+            "//conditions:default": [],
+        }) + select({
             "@llvm//toolchain:runtimes_none": [
                 "@llvm//toolchain/features:external_include_paths",
                 "@llvm//toolchain/features:fdo_optimize",
@@ -223,6 +226,9 @@ def cc_toolchain(
     cc_feature_set(
         name = name + "_generic_selected_enabled_features",
         all_of = select({
+            "@platforms//os:linux": ["@llvm//toolchain/features:gcc_quoting_for_param_files"],
+            "//conditions:default": [],
+        }) + select({
             "@llvm//toolchain:runtimes_none": [name + "_generic_runtimes_only_enabled_features"],
             "@llvm//toolchain:runtimes_stage1": [name + "_generic_runtimes_only_enabled_features"],
             "@llvm//toolchain:runtimes_stage1_hosted": [name + "_generic_runtimes_only_enabled_features"],

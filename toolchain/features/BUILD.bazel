@@ -6,6 +6,12 @@ load("@rules_cc//cc/toolchains/impl:documented_api.bzl", "cc_args_list")
 
 package(default_visibility = ["//visibility:public"])
 
+# Clang on Linux uses GCC response-file syntax, including backslash quoting.
+cc_feature(
+    name = "gcc_quoting_for_param_files",
+    feature_name = "gcc_quoting_for_param_files",
+)
+
 _DEBUG_INFO_COMPILE_ACTIONS = [
     "@rules_cc//cc/toolchains/actions:c_compile",
     "@rules_cc//cc/toolchains/actions:cpp_compile",
